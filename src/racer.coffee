@@ -1,4 +1,4 @@
-{mergeAll, isServer} = util = require './util'
+{mergeAll, isServer} = require './util'
 require 'es5-shim' unless isServer
 {EventEmitter} = require 'events'
 plugin = require './plugin'
@@ -17,8 +17,10 @@ racer.use(__dirname + '/racer.server')  if isServer
 racer
   .use(require './mutators')
   .use(require './refs')
-  .use(require './pubSub')
+  .use(require './PubSub')
   .use(require './txns')
+
+racer.use(require './adapters/pubsub-memory') if isServer
 
 # The browser module must be included last, since it creates a
 # model instance, before which all plugins should be included
